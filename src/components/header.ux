@@ -1,0 +1,46 @@
+<template>
+  <div class="search-bar">
+    <input type="text" placeholder="{{placeholder}}" onchange="onChange" />
+    <text>星选好店 年中大促 秒杀9.9元起 百万豪礼免费拿</text>
+  </div>
+</template>
+
+<script>
+export default {
+  props: ['placeholder'],
+  onInit() {
+    //Initiation
+  },
+  onChange(ev) {
+    this.$dispatch('search', { params: ev.value })
+    if (ev.value === '') {
+      this.$dispatch('stopSearch')
+    }
+  }
+}
+</script>
+
+<style lang="less">
+@import '../assets/styles/style.less';
+
+.search-bar {
+  background-color: @grey;
+  width: 100%;
+  display: flex;
+  .flex-box-mixins(column, center, center);
+
+  text {
+    margin-top: 20px;
+    margin-bottom: 40px;
+  }
+
+  input {
+    border-radius: 25px;
+    padding: 10px;
+    /* margin-top: 50px; */
+    text-align: center;
+    background-color: @white;
+    width: 95%;
+  }
+}
+</style>

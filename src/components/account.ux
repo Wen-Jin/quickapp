@@ -1,0 +1,86 @@
+<template>
+  <div class="account-wrapper">
+    <!-- 账户管理页面 -->
+    <div class="account-item">
+      <text class="account-name-left">{{ username.key }}</text>
+      <text class="account-name-right">{{ username.value }}</text>
+    </div>
+
+    <div class="account-item" onclick="bindPhone">
+      <text class="account-phone-left">{{ phone.key }}</text>
+      <div class="account-phone-right">
+        <text class="account-phone">{{ phone.value }}</text>
+        <image class="account-forward-arrow" src="../assets/icons/right-arrow.png"></image>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  data: {},
+  props: [
+    'username', //登录栏信息,包栏目名称(key)、值(value)
+    'phone' //绑定手机号栏信息,包含栏目名称(key)、值(value)
+  ],
+  //跳转到绑定手机号的页面，
+  onInit() {
+    this.$page.setTitleBar({
+      text: '账号管理',
+      textColor: '#1a1a1a',
+      opacity: 1,
+      backgroundColor: '#f2f2f2',
+      menu: false
+    })
+  }
+}
+</script>
+
+<style lang="less">
+@import '../assets/styles/style.less';
+
+.account-wrapper {
+  width: 750px;
+  flex-direction: column;
+}
+
+.account-item {
+  height: 100px;
+  margin: 0px 33px 0px 33px;
+  border-bottom-width: 2px;
+  border-color: @grey;
+}
+
+.account-name-left {
+  color: @font-color;
+  opacity: 1;
+  font-size: 31.3px;
+}
+
+.account-name-right {
+  color: @font-color;
+  opacity: 0.5;
+  font-size: 27.1px;
+}
+
+.account-phone-left {
+  color: @font-color;
+  opacity: 1;
+  font-size: 31.3px;
+}
+
+.account-phone-right {
+  justify-content: flex-end;
+}
+
+.account-phone {
+  color: @font-color;
+  opacity: 0.5;
+  font-size: 27.1px;
+}
+
+.account-forward-arrow {
+  align-self: center;
+  margin-left: 9px;
+}
+</style>

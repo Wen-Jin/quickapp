@@ -1,0 +1,54 @@
+<template>
+  <div class="swiper-banner">
+    <block for="{{data}}">
+      <div class="category-container" onclick="changeCategory">
+        <image src="{{$item.img}}"></image>
+        <div class="food-category">
+          <text>{{ $item.title }}</text>
+        </div>
+      </div>
+    </block>
+  </div>
+</template>
+
+<script>
+export default {
+  protected: ['data'],
+  changeCategory() {
+    if (this.previousVm) {
+      // Way1. 调用方法
+      // 当用户改变分类的时候
+      this.previousVm.processMessage('change category')
+    }
+  }
+}
+</script>
+
+<style lang="less">
+@import '../assets/styles/style.less';
+.swiper-banner {
+  flex-wrap: wrap;
+  padding-bottom: 20px;
+  .flex-box-mixins(row, space-between, center);
+
+  .category-container {
+    margin: 10px;
+    width: 20%;
+    height: 150px;
+    .flex-box-mixins(column, center, center);
+    image {
+      width: 80px;
+      height: 80px;
+    }
+  }
+
+  .food-category {
+    height: 30px;
+    .flex-box-mixins(row, center, center);
+    text {
+      text-align: center;
+      font-size: 20px;
+    }
+  }
+}
+</style>

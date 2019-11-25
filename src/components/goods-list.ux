@@ -1,0 +1,146 @@
+<import name="goods" src="./good.ux"></import>
+<template>
+  <div class="home-container">
+    <!-- 位置 -->
+    <div class="location-head">
+      <div class="left-header" onclick="goLocation">
+        <image class="location-icon" src="../assets/icons/location.png"></image>
+        <text class="location-address">配送至{{ address }}</text>
+      </div>
+    </div>
+
+    <swiper class="banner-swipe"> <image class="banner-image" src="{{$item.uri}}" for="{{list}}"></image> </swiper>
+
+    <div>
+      <list class="verticaltab-content">
+        <list-item
+          for="{{vtablist}}"
+          type="listItem"
+          class="verticaltab-box {{$item.select?'choose-background-color':''}}"
+        >
+          <text onclick="detail()" class="verticaltab-text {{$item.select?'choose-color':''}}">{{ $item.title }}</text>
+        </list-item>
+      </list>
+      <list class="vtab-right">
+        <list-item for="{{vtablist}}" type="listItem">
+          <goods products="{{$item.products}}" if="{{$item.select === true}}"></goods>
+        </list-item>
+      </list>
+    </div>
+  </div>
+</template>
+
+<script>
+import router from '@system.router'
+module.exports = {
+  data: {
+    props: [
+      //传入配送地址
+      'address',
+      //传入swiper的图片
+      'list',
+      //竖向列表数据
+      'vtablist'
+    ]
+  },
+  //选中主分类
+  detail: function(e) {
+    var value = e.target.attr.value,
+      index
+    for (let i in this.vtablist) {
+      this.vtablist[i].select = false
+      if (this.vtablist[i].title === value) {
+        index = i
+      }
+    }
+    this.vtablist[index].select = true
+  },
+  //点击配送地址，跳转到地址选择页面
+  goLocation() {
+    router.push({
+      uri: '/pages/location'
+    })
+  },
+  //点击我的信息，跳转到我的主页
+  goMinePage() {
+    router.push({
+      uri: '/pages/mine'
+    })
+  }
+}
+</script>
+
+<style lang="less">
+@import '../assets/styles/style.less';
+
+.home-container {
+  flex-direction: column;
+}
+
+.location-head {
+  display: flex;
+  justify-content: space-between;
+  height: 100px;
+  align-items: center;
+  margin: 15px 33px 15px 33px;
+}
+
+.location-icon {
+  width: 21px;
+  height: 26px;
+  align-self: center;
+  resize-mode: contain;
+  margin-right: 16px;
+}
+
+.location-address {
+  font-size: 31.3px;
+  color: #1a1a1a;
+  margin-right: 16px;
+  align-self: center;
+}
+
+.banner-swipe {
+  height: 685px;
+  margin: 0px 33px 33px 33px;
+  indicator-selected-color: @white;
+  indicator-color: rgba(255, 255, 255, 0.5);
+  indicator-size: 12.5px;
+}
+
+.banner-image {
+  border-radius: 17px;
+}
+
+.verticaltab-content {
+  width: 172px;
+  height: 100%;
+  .flex-box-mixins(column, flex-start, center);
+  background-color: @grey;
+}
+
+.vtab-right {
+  width: 578px;
+  height: 100%;
+}
+
+.verticaltab-box {
+  height: 95px;
+  width: 172px;
+}
+
+.choose-background-color {
+  background-color: @white;
+}
+
+.verticaltab-text {
+  color: #1a1a1a;
+  flex: 1;
+  font-size: 27.1px;
+  text-align: center;
+}
+
+.choose-color {
+  color: #38d260;
+}
+</style>

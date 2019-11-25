@@ -1,0 +1,234 @@
+<import name="my-rating" src="apex-ui/components/rating/index"></import>
+<import name="my-load-more" src="apex-ui/components/load-more/index"></import>
+
+<template>
+  <list onscrollbottom="renderMoreListItem" class="shop-list-container">
+    <list-item type="custom">
+      <slot></slot>
+    </list-item>
+    <list-item type="list-header" class="list-header">
+      <text class="list-title">推荐商家</text>
+      <div class="seperator"></div>
+    </list-item>
+    <list-item type="shops" for="{{filteredShopList}}" onclick="gotoShopPage" class="shops">
+      <div class="shop-item-container">
+        <image class="shop-image" src="{{$item.shop_img}}"></image>
+        <div class="right-shop-info">
+          <div>
+            <text class="badge">品牌</text><text>{{ $item.shop_name }}</text>
+          </div>
+          <div>
+            <my-rating icon="&#xe912;" disabled="true" value="{{$item.shop_rate}}" size="30"></my-rating>
+            <text>{{ $item.shop_sales }}</text>
+          </div>
+          <div class="buttom">
+            <text>{{ $item.shop_detail }}</text>
+            <text class="buttom-right">700米|40分钟</text>
+          </div>
+          <div class="seperator"></div>
+          <div class="others">
+            <text class="first-word">首</text>
+            <text>新用户下单满17减4</text>
+          </div>
+        </div>
+      </div>
+    </list-item>
+    <list-item type="lordmore" class="load-more" if="{{hasMoreData}}">
+      <my-load-more tip="加载更多"></my-load-more>
+    </list-item>
+    <list-item type="nomore" class="load-more" if="{{!hasMoreData}}">
+      <my-load-more tip="没有更多了" loading="{{ false }}"></my-load-more>
+    </list-item>
+  </list>
+</template>
+
+<script>
+import router from '@system.router'
+export default {
+  data: {
+    props: ['filter'],
+    hasMoreData: true,
+    filteredShopList: [],
+    shopList: [
+      {
+        shop_img: '/assets/images/shop1.png',
+        shop_name: '1点点 （卓越城店）',
+        shop_sales: '店铺月销',
+        shop_detail: '¥20起送|免费配送|',
+        shop_rate: 3
+      },
+      {
+        shop_img: '/assets/images/shop2.png',
+        shop_name: '台盖 （卓越汇店）',
+        shop_sales: '店铺月销',
+        shop_detail: '¥20起送|免费配送|',
+        shop_rate: 4
+      },
+      {
+        shop_img: '/assets/images/shop3.png',
+        shop_name: '贡茶 （梅林中心店）',
+        shop_sales: '店铺月销',
+        shop_detail: '¥20起送|免费配送|',
+        shop_rate: 5
+      },
+      {
+        shop_img: '/assets/images/shop4.png',
+        shop_name: '正新鸡排 （梅林店）',
+        shop_sales: '店铺月销',
+        shop_detail: '¥20起送|免费配送|',
+        shop_rate: 3
+      },
+      {
+        shop_img: '/assets/images/shop5.png',
+        shop_name: '享甜 （梅林店）',
+        shop_sales: '店铺月销',
+        shop_detail: '¥20起送|免费配送|',
+        shop_rate: 5
+      },
+      {
+        shop_img: '/assets/images/shop1.png',
+        shop_name: '1点点 （卓越城店）',
+        shop_sales: '店铺月销',
+        shop_detail: '¥20起送|免费配送|',
+        shop_rate: 3
+      },
+      {
+        shop_img: '/assets/images/shop2.png',
+        shop_name: '台盖 （卓越汇店）',
+        shop_sales: '店铺月销',
+        shop_detail: '¥20起送|免费配送|',
+        shop_rate: 4
+      }
+    ]
+  },
+  onInit() {
+    this.filteredShopList = this.shopList
+    this.$watch('filter', 'watchFilterChange')
+  },
+  watchFilterChange(newV) {
+    if (newV === '') {
+      this.filteredShopList = this.shopList
+      return
+    }
+    this.filteredShopList = this.shopList.filter(function(shop) {
+      return shop.shop_name.indexOf(newV) > -1
+    })
+  },
+  gotoShopPage() {
+    router.push({
+      uri: '/pages/main'
+    })
+  },
+  renderMoreListItem() {
+    setTimeout(() => {
+      this.hasMoreData = false
+    }, 2000)
+  },
+  processMessage(msg) {
+    let shuffle = a => {
+      for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1))
+        ;[a[i], a[j]] = [a[j], a[i]]
+      }
+      return a
+    }
+    if (msg) {
+      let shuffledArray = shuffle(this.shopList)
+      this.filteredShopList = []
+      this.filteredShopList = shuffledArray
+      //这里应该是 当用户改变食品分类时，显示在’推荐商家‘的列表
+    }
+  }
+}
+</script>
+
+<style lang="less">
+@import '../assets/styles/style.less';
+
+.badge {
+  font-weight: bold;
+  background-color: rgb(255, 232, 43);
+  padding: 4px;
+  margin-right: 10px;
+}
+.shop-list-container {
+  background-color: @grey;
+  width: 100%;
+  flex: 1;
+  margin-bottom: 108px;
+
+  .list-header {
+    flex-direction: column;
+    background-color: @white;
+    margin-top: 40px;
+
+    .list-title {
+      margin-top: 20px;
+      margin-left: 30px;
+    }
+  }
+}
+
+.load-more {
+  display: flex;
+  justify-content: center;
+  background-color: @white;
+}
+.seperator {
+  margin: 10px 0px;
+  width: 100%;
+  border-width: 1px;
+  border-color: @grey;
+}
+.shops{
+  background-color: @white;
+}
+.shop-item-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  width: 100%;
+  height: 200px;
+  margin-bottom: 20px;
+  border-bottom-width: 1px;
+  border-bottom-color: @grey;
+
+  .buttom {
+    text {
+      font-size: 22px;
+    }
+    font-size: 10px;
+    flex-direction: row;
+    justify-content: space-between;
+
+    .buttom-right {
+      margin-left: 20px;
+    }
+  }
+}
+
+.shop-image {
+  margin-top: 15px;
+  width: 150px;
+  height: 150px;
+}
+
+.right-shop-info {
+  width: 500px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  .others {
+    text {
+      font-size: 22px;
+    }
+    .first-word {
+      margin-right: 20px;
+      padding: 4px;
+      color: #ffffff;
+      background-color: rgb(112, 188, 70);
+    }
+  }
+}
+</style>

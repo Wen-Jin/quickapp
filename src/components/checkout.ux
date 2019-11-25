@@ -1,0 +1,79 @@
+<template>
+  <div class="flexible-tabbar" onclick="goShoppingCart">
+    <div class="left-bar">
+      <div if="{{countnumber>0}}" class="count-number" style="width: {{countnumber >= 10 ? 50 : 40}}px">
+        <text>{{ countnumber }}</text>
+      </div>
+      <image class="cart-image" src="/assets/images/shopping.png" />
+    </div>
+    <text class="sum-number">合计¥{{ sum }}</text> <text>另需配送费¥5</text>
+    <input class="confirm-button" type="button" value="去结算" onclick="goShoppingCart" />
+  </div>
+</template>
+
+<script>
+import router from '@system.router'
+
+export default {
+  props: ['sum', 'verticaltablist', 'countnumber'],
+  goShoppingCart() {
+    router.push({
+      uri: '/pages/shopping-cart',
+      params: {
+        verticaltablist: this.verticaltablist,
+        sum: this.sum
+      }
+    })
+  },
+  onInit() {}
+}
+</script>
+
+<style lang="less">
+@import '../assets/styles/style.less';
+
+.flexible-tabbar {
+  .sum-number {
+    width: 200px;
+    font-size: 30px;
+    padding: 0 20px;
+    text-overflow: ellipsis;
+  }
+
+  height: 200px;
+  background-color: @grey;
+  .cart-image {
+    margin-right: 30px;
+    height: 80px;
+    width: 70px;
+  }
+
+  .left-bar {
+    margin-left: 30px;
+    width: 80px;
+    display: flex;
+    flex-direction: column;
+
+    .count-number {
+      position: fixed;
+      height: 40px;
+      border-radius: 20px;
+      background-color: #38d260;
+      bottom: 70px;
+      left: 90px;
+      text {
+        margin-left: 10px;
+        font-size: 30px;
+        color: @white;
+      }
+    }
+  }
+
+  .confirm-button {
+    margin-left: 30px;
+    width: 300px;
+    background-color: #ff9a00;
+    color: @white;
+  }
+}
+</style>

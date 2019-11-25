@@ -1,0 +1,34 @@
+<import name="minePage" src="../../mine/index.ux"></import>
+<import name="my-tabbar" src="apex-ui/components/tabbar/index"></import>
+
+<template>
+  <div>
+    <div><minePage></minePage></div>
+    <my-tabbar tabbar="{{tabbarData}}"></my-tabbar>
+  </div>
+</template>
+
+<script>
+export default {
+  data: {
+    tabbarData: [
+      {
+        iconPath: '/assets/icons/order.png',
+        selectedIconPath: '/assets/icons/order-active.png',
+        pagePath: '/pages/shops-list/main-page',
+        text: '外卖',
+        active: false
+      },
+      {
+        iconPath: '/assets/icons/mine.png',
+        selectedIconPath: '/assets/icons/mine-active.png',
+        pagePath: '/pages/shops-list/mine-page',
+        text: '我的',
+        active: true
+      }
+    ]
+  }
+}
+</script>
+
+<style lang="less"></style>

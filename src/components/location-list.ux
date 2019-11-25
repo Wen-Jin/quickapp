@@ -1,0 +1,80 @@
+<template>
+  <div class="location-list-container">
+    <div class="list-title">
+      <text>{{ title }}</text>
+    </div>
+    <block for="{{listdata}}">
+      <div class="list-item">
+        <text onclick="selectAddress">{{ $item.location }}</text>
+        <div class="target" if="{{title === '当前地址'}}" onclick="getLocation">
+          <image src="/assets/icons/target.png"></image>
+          <text class="location-button">重新定位</text>
+        </div>
+      </div>
+    </block>
+  </div>
+</template>
+
+<script>
+import prompt from '@system.prompt'
+import router from '@system.router'
+import geolocation from '@system.geolocation'
+
+export default {
+  props: ['listdata', 'title'],
+  selectAddress(event) {
+    router.push({
+      uri: '/pages/main',
+      params: {
+        address: event.target.attr.value
+      }
+    })
+  },
+  getLocation() {
+    geolocation.getLocation({
+      success: function(data) {
+        prompt.showToast({
+          message: `handling success: longitude = ${data.longitude}, latitude = ${data.latitude}`
+        })
+      },
+      fail: function(data, code) {
+        prompt.showToast({
+          message: `handling fail, code = ${code}`
+        })
+      }
+    })
+  }
+}
+</script>
+
+<style lang="less">
+@import '../assets/styles/style.less';
+
+.location-list-container {
+  display: flex;
+  flex-direction: column;
+
+  .list-title {
+    height: 100px;
+    width: 100%;
+    background-color: @grey;
+  }
+
+  .list-item {
+    height: 80px;
+    border-width: 1px;
+    border-color: @grey;
+    background-color: @white;
+    .flex-box-mixins(row, space-between, stretch);
+
+    image {
+      width: 80px;
+      height: 80px;
+    }
+
+    text {
+      margin: 0 20px;
+    }
+  }
+}
+</style>

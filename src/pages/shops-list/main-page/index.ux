@@ -1,0 +1,126 @@
+<import name="header" src="../../../components/header"></import>
+<import name="foodCategory" src="../../../components/swiper-banner"></import>
+<import name="shopList" src="../../../components/shop-list"></import>
+<import name="my-tabbar" src="apex-ui/components/tabbar/index"></import>
+
+<template>
+  <div>
+    <shopList id="shopList" filter="{{filter}}">
+      <div class="custom-page">
+        <header placeholder="搜索商家，商品名称"></header>
+        <swiper show="{{!isSearching}}" class="swiperContent">
+          <foodCategory id="foodCategory" data="{{foodCategory}}"></foodCategory>
+          <foodCategory id="foodCategory2" data="{{foodCategory}}"></foodCategory>
+        </swiper>
+      </div>
+    </shopList>
+    <my-tabbar tabbar="{{tabbarData}}"></my-tabbar>
+  </div>
+</template>
+
+<script>
+export default {
+  data: {
+    tabbarData: [
+      {
+        iconPath: '/assets/icons/order.png',
+        selectedIconPath: '/assets/icons/order-active.png',
+        pagePath: '/pages/shops-list/main-page',
+        text: '外卖',
+        active: true
+      },
+      {
+        iconPath: '/assets/icons/mine.png',
+        selectedIconPath: '/assets/icons/mine-active.png',
+        pagePath: '/pages/shops-list/mine-page',
+        text: '我的',
+        active: false
+      }
+    ],
+    isSearching: false,
+    // type: 'content_1',
+    filter: '',
+    foodCategory: [
+      {
+        title: '美食',
+        img: '/assets/images/category1.png'
+      },
+      {
+        title: '商超便利',
+        img: '/assets/images/category2.png'
+      },
+      {
+        title: '水果',
+        img: '/assets/images/category3.png'
+      },
+      {
+        title: '医疗药品',
+        img: '/assets/images/category4.png'
+      },
+      {
+        title: '浪漫鲜花',
+        img: '/assets/images/category5.png'
+      },
+      {
+        title: '汉堡披萨',
+        img: '/assets/images/category6.png'
+      },
+      {
+        title: '厨房生鲜',
+        img: '/assets/images/category7.png'
+      },
+      {
+        title: '炸鸡炸串',
+        img: '/assets/images/category8.png'
+      }
+    ]
+  },
+  onInit() {
+    this.$on('search', this.filterChange)
+    this.$on('stopSearch', () => {
+      this.isSearching = false
+    })
+    this.$page.setTitleBar({
+      titleBar: false,
+      text: '快应用外卖模版',
+      textColor: '#ffffff',
+      backgroundColor: '#F2F2F2',
+      menu: true
+    })
+  },
+  filterChange(filter) {
+    this.isSearching = true
+    this.filter = filter.detail.params
+  },
+  onReady() {
+    this.establishRef()
+  },
+  /**
+   * 建立相互VM的引用
+   */
+  establishRef() {
+    const siblingVm1 = this.$vm('foodCategory')
+    const siblingVm2 = this.$vm('shopList')
+
+    siblingVm2.parentVm = this
+    siblingVm2.nextVm = siblingVm1
+    siblingVm1.parentVm = this
+    siblingVm1.previousVm = siblingVm2
+  }
+}
+</script>
+
+<style lang="less">
+@import '../../../assets/styles/style.less';
+
+.custom-page {
+  flex-direction: column;
+  width: 100%;
+}
+
+.swiperContent {
+  background-color: @white;
+  width: 100%;
+  height: 380px;
+}
+</style>

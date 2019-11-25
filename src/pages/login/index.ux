@@ -1,0 +1,89 @@
+<template>
+  <div class="account-wrapper">
+    <!-- 账户管理页面 -->
+    <div class="account-item">
+        <input type="text" placeholder="请输入手机号码"></input>
+        <input class="phone-verify" type="button" value="发送验证码" onclick="requestVerify"></input>
+    </div>
+
+    <div class="account-item" onclick="bindPhone">
+        <input class="verified-code" type="text" placeholder="验证码"></input>
+    </div>
+
+    <text class="detail">温馨提示：未注册账号的手机号，登录时将自动注册，且代表您已经同意《用户注册协议》</text>
+    <input class="login-button" value="确定" type="button"></input>
+  </div>
+</template>
+
+<script>
+import prompt from '@system.prompt'
+
+import router from '@system.router'
+export default {
+  data: {
+    username: {
+      key: '电话',
+      value: '123456789'
+    },
+    phone: {
+      key: '账号',
+      value: 'www.quickapp.com'
+    }
+  },
+  requestVerify() {
+    prompt.showToast({
+        message: `请接收验证码`
+    })
+  },
+  onInit() {
+    this.$page.setTitleBar({
+      text: '账号管理',
+      textColor: '#1a1a1a',
+      backgroundColor: '#f2f2f2',
+      menu: false
+    })
+  }
+}
+</script>
+
+<style lang="less">
+@import '../../assets/styles/style.less';
+
+.account-wrapper {
+  width: 100%;
+  flex-direction: column;
+  align-items: center;
+
+    .account-item {
+        width: 100%;
+        justify-content: space-around;
+        align-items: center;
+        height: 100px;
+        margin: 0px 33px 0px 33px;
+        border-bottom-width: 2px;
+        border-color: @grey;
+
+        .phone-verify {
+            padding: 10px;
+            color: #ffffff;
+            background-color: #f2f2f2;
+        }
+       
+    }
+    .detail {
+        margin-top: 10px;
+        margin-bottom: 10px;
+        width: 85%;
+    }
+    .login-button{
+        width: 85%;
+        background-color: rgb(76,217,112);
+        color: white;
+    }
+    .verified-code {
+        width: 100%;
+        padding-left: 85px;
+    }
+}
+</style>
+

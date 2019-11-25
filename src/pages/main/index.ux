@@ -1,0 +1,340 @@
+<import name="goodsList" src="../../components/goods-list"></import>
+<import name="sumBar" src="../../components/checkout"></import>
+<import name="goodDetail" src="../../components/goods-detail"></import>
+
+<template>
+  <div class="tutorial-page">
+    <div class="detail" if="{{ifDetailShow}}" onclick="closeDetail">
+      <div class="close-hint"><text>点击空白处关闭</text></div>
+      <div class="float">
+        <goodDetail data="{{goodDetailInfo}}"></goodDetail>
+      </div>
+    </div>
+    <div class="flexible-tabs">
+      <goodsList address="{{address}}" list="{{banner}}" vtablist="{{mainData}}"></goodsList>
+      <sumBar sum="{{sum}}" countnumber="{{countNumber}}" verticaltablist="{{mainData}}"></sumBar>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  public: {
+    countNumber: 0, //左下角标显示购物车内数量
+    ifDetailShow: false, //food detail（浮层）是否显示
+    sum: 0, //购买的总价
+    address: '步步高大厦', //地理定位
+    goodDetailInfo: {}, //选中货物浮层中的内容
+    //swiper图片资源
+    banner: [
+      {
+        uri: '../../assets/swiper-images/food1.png'
+      },
+      {
+        uri: '../../assets/swiper-images/food2.png'
+      },
+      {
+        uri: '../../assets/swiper-images/food3.png'
+      }
+    ],
+    //外卖首页竖向列表分类参数
+    mainData: [
+      {
+        title: '今日推荐',
+        select: true,
+        id: 'rec',
+        products: [
+          {
+            id: '001',
+            goods_pic: '../../assets/images/lobster.png',
+            goods_name: '招牌 奶牛芝士焗龙虾',
+            goods_detail: '龙虾是世界上的 大型食用 虾类 , 其味道鲜美 、 营养丰富 , 倍受人们 的青睐',
+            goods_numbers: '一份/约500g',
+            goods_discount: 40.8,
+            goods_price: 58.8,
+            choosed: false,
+            count: 0
+          },
+          {
+            id: '002',
+            goods_pic: '../../assets/images/shrimp.png',
+            goods_name: '招牌 大虾',
+            goods_detail: '大虾是产于水中可食用的一种动物。',
+            goods_numbers: '一份/500g',
+            goods_discount: 40,
+            goods_price: 58.8,
+            choosed: true,
+            count: 1
+          },
+          {
+            id: '003',
+            goods_pic: '../../assets/images/salmon.png',
+            goods_name: '招牌 三文鱼',
+            goods_detail: '三文鱼是部分鲑科鱼类的俗称，原本指的是鲑属的大西洋鲑鱼（Salmo salar)',
+            goods_numbers: '半份/500g',
+            goods_discount: 40,
+            goods_price: 58.8,
+            choosed: false,
+            count: 0
+          },
+          {
+            id: '004',
+            goods_pic: '../../assets/images/beef.png',
+            goods_name: '招牌 牛排',
+            goods_detail: '牛排，或称牛扒，是块状的牛肉，是西餐中最常见的食物之一。',
+            goods_numbers: '半份/500g',
+            goods_discount: 40,
+            goods_price: 58.8,
+            choosed: false,
+            count: 0
+          },
+          {
+            id: '005',
+            goods_pic: '../../assets/images/crab.png',
+            goods_name: '招牌 螃蟹',
+            goods_detail: '绝大多数种类的螃蟹生活在海里或近海区，也有一些栖于淡水或陆地。',
+            goods_numbers: '半份/500g',
+            goods_discount: 40,
+            goods_price: 58.8,
+            choosed: true,
+            count: 1
+          },
+          {
+            id: '006',
+            goods_pic: '../../assets/images/sushi.png',
+            goods_name: '招牌 寿司',
+            goods_detail: '寿司”其实就是咸鱼的意思，在日本古代写作“鮨”（すし），而“鮨”正是指咸鱼',
+            goods_numbers: '半份/500g',
+            goods_discount: 40,
+            goods_price: 58.8,
+            choosed: false,
+            count: 0
+          }
+        ]
+      },
+      {
+        title: '招牌菜品',
+        select: false,
+        id: 'all',
+        products: [
+          {
+            id: '007',
+            goods_pic: '../../assets/images/waffle.png',
+            goods_name: '招牌 华夫饼',
+            goods_detail: '华夫饼，又叫窝夫、格子饼、格仔饼、压花蛋饼，是一种烤饼，源于比利时',
+            goods_numbers: '半份/500g',
+            goods_discount: 40,
+            goods_price: 58.8,
+            choosed: true,
+            count: 1
+          },
+          {
+            id: '008',
+            goods_pic: '../../assets/images/sushi.png',
+            goods_name: '招牌 寿司2',
+            goods_detail: '寿司”其实就是咸鱼的意思，在日本古代写作“鮨”（すし），而“鮨”正是指咸鱼',
+            goods_numbers: '半份/500g',
+            goods_discount: 40,
+            goods_price: 58.8,
+            choosed: false,
+            count: 0
+          },
+          {
+            id: '009',
+            goods_pic: '../../assets/images/beef.png',
+            goods_name: '招牌 牛排2',
+            goods_detail: '牛排，或称牛扒，是块状的牛肉，是西餐中最常见的食物之一。',
+            goods_numbers: '半份/500g',
+            goods_discount: 40,
+            goods_price: 58.8,
+            choosed: false,
+            count: 0
+          },
+          {
+            id: '010',
+            goods_pic: '../../assets/images/samon.png',
+            goods_name: '招牌 三文鱼2',
+            goods_detail: '三文鱼是部分鲑科鱼类的俗称，原本指的是鲑属的大西洋鲑鱼（Salmo salar)',
+            goods_numbers: '半份/500g',
+            goods_discount: 40,
+            goods_price: 58.8,
+            choosed: false,
+            count: 0
+          }
+        ]
+      },
+      {
+        title: '素食主义',
+        select: false,
+        id: 'sig',
+        products: []
+      },
+      {
+        title: '肉食主义',
+        select: false,
+        id: 'ber',
+        products: []
+      },
+      {
+        title: '主食系列',
+        select: false,
+        id: 'sea',
+        products: []
+      },
+      {
+        title: '主食分装',
+        select: false,
+        id: 'mel',
+        products: []
+      },
+      {
+        title: '购买套餐',
+        select: false,
+        id: 'jui',
+        products: []
+      },
+      {
+        title: '饮品系列',
+        select: false,
+        id: 'gif',
+        products: []
+      }
+    ]
+  },
+  onInit() {
+    this.getSum()
+    this.$page.setTitleBar({ text: '快应用外卖' })
+    this.$on('countChange', this.getSum)
+    this.$on('showDetail', this.detailShow)
+    this.getCountNumber()
+  },
+  detailShow(event) {
+    this.ifDetailShow = true
+    this.goodDetailInfo = event.detail.params
+    event.stop()
+  },
+  closeDetail() {
+    this.ifDetailShow = false
+    this.$page.setTitleBar({ text: '快应用外卖' })
+  },
+  getSum() {
+    let sumNumber = 0
+    this.mainData.forEach(category => {
+      category.products.forEach(item => (sumNumber += item.count * item.goods_discount))
+    })
+    this.sum = sumNumber.toFixed(2)
+    this.getCountNumber()
+  },
+  getCountNumber() {
+    let result = 0
+    this.mainData.forEach(category => {
+      category.products.forEach(product => {
+        result += product.count
+      })
+    })
+    this.countNumber = result
+  },
+  onShow() {
+    if (this.$app.$data.dataPageShoppingCart && this.$app.$data.dataPageShoppingCart.gotoPage === 'pagemain') {
+      // 从数据中获取回传给本页面的数据
+      const data = this.$app.$data.dataPageShoppingCart.params
+      this.mainData.forEach(item =>
+        item.products.forEach(good => {
+          data.data.forEach(item => {
+            if (item.id === good.id) {
+              good.count = item.count
+              good.choosed = item.choosed
+            }
+          })
+        })
+      )
+    }
+    this.getSum()
+  }
+}
+</script>
+
+<style lang="less">
+@import '../../assets/styles/style.less';
+
+.tutorial-page {
+  .detail {
+    background-color: black;
+    height: 100%;
+    width: 100%;
+    position: fixed;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    .flex-box-mixins(column, center, center);
+
+    .close-hint {
+      margin: 30px 0;
+      text {
+        color: @white;
+        font-size: 40px;
+      }
+    }
+
+    .float {
+      opacity: 1;
+      background-color: @white;
+      height: 1000px;
+      width: 600px;
+    }
+  }
+
+  .flexible-tabs {
+    display: flex;
+    flex-direction: column;
+    .flexible-tabbar {
+      .sum-number {
+        width: 200px;
+        font-size: 30px;
+        padding: 0 20px;
+      }
+
+      height: 200px;
+      display: flex;
+      background-color: #f1f1f1;
+      flex-direction: row;
+      justify-content: space-around;
+
+      .cart-image {
+        margin-right: 30px;
+        height: 80px;
+        width: 70px;
+      }
+
+      .left-bar {
+        margin-left: 30px;
+        width: 80px;
+        display: flex;
+        flex-direction: column;
+
+        .count-number {
+          position: fixed;
+          width: 40px;
+          height: 40px;
+          border-radius: 20px;
+          background-color: #38d260;
+          bottom: 70px;
+          left: 90px;
+
+          text {
+            margin-left: 8px;
+            font-size: 30px;
+            color: @white;
+          }
+        }
+      }
+
+      .confirm-button {
+        margin-left: 30px;
+        width: 300px;
+        background-color: #ff9a00;
+        color: @white;
+      }
+    }
+  }
+}
+</style>

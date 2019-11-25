@@ -1,0 +1,149 @@
+<import name="my-input-number" src="apex-ui/components/input-number/index"></import>
+
+<template>
+  <!-- template里只能有一个根节点 -->
+  <div class="goods-container">
+    <!-- 商品列表 -->
+    <block for="products">
+      <div class="page-content" onclick="getGoodsDetail($item)">
+        <image class="pic" style="width:134px;height:134px;" src="{{$item.goods_pic}}"></image>
+        <div class="goods-detail">
+          <text class="goods-name">{{ $item.goods_name }}</text>
+          <text class="goods-weight">{{ $item.goods_numbers }}</text>
+          <div class="bottom">
+            <div class="goods-price">
+              <text class="goods-discount">¥{{ $item.goods_discount }}</text>
+              <text class="goods-origin">¥{{ $item.goods_price }}</text>
+            </div>
+            <div class="count-number">
+              <my-input-number
+                value="{{$item.count}}"
+                min="{{0}}"
+                max="{{100}}"
+                positive="{{true}}"
+                onchange="handlerChangeGood($item)"
+              ></my-input-number>
+            </div>
+          </div>
+        </div>
+      </div>
+    </block>
+  </div>
+</template>
+
+<script>
+module.exports = {
+  props: ['products'],
+  onInit() {},
+  getGoodsDetail(item) {
+    this.$dispatch('showDetail', { params: item })
+  },
+  handlerChangeGood(params, event) {
+    params.count = event.detail.value
+    if (params.count === 0) {
+      params.choosed = false
+    } else {
+      params.choosed = true
+    }
+    this.countChange()
+  },
+  countChange() {
+    this.$dispatch('countChange')
+  }
+}
+</script>
+
+<style lang="less">
+@import '../assets/styles/style.less';
+
+.bottom {
+  justify-content: space-between;
+  width: 378px;
+  padding-right: 10px;
+}
+
+.goods-container {
+  width: 578px;
+  .flex-box-mixins(column, center, center);
+}
+
+.page-content {
+  align-items: center;
+  height: 200px;
+  width: 578px;
+  border-bottom-width: 1px;
+  border-color: @grey;
+}
+
+.pic {
+  width: 134px;
+  height: 134px;
+  border-radius: 8.3px;
+  margin: 0px 33px 0px 33px;
+}
+
+.goods-detail {
+  flex-direction: column;
+}
+
+.goods-name {
+  font-size: 31.3px;
+  color: @font-color;
+}
+
+.goods-weight {
+  color: @font-color;
+  opacity: 0.3;
+  font-size: 20.8px;
+  margin-top: 8px;
+}
+
+.goods-discount {
+  color: #ff742e;
+  font-size: 31.3px;
+  margin-right: 16px;
+  margin-top: 19px;
+}
+
+.goods-origin {
+  color: @font-color;
+  opacity: 0.3;
+  font-size: 20.8px;
+  text-decoration: line-through;
+  margin-top: 24px;
+}
+
+.edit {
+  font-size: 22px;
+  color: @font-color;
+  justify-content: center;
+  align-items: center;
+  width: 48px;
+  height: 50px;
+}
+
+.count {
+  border-top-color: @edit-border;
+  border-top-width: 1px;
+  border-bottom-color: @edit-border;
+  border-bottom-width: 1px;
+}
+
+.edit-text {
+  color: @font-color;
+  opacity: 1;
+  font-size: 22px;
+}
+
+.minus {
+  border-top-left-radius: 5.9px;
+  border-bottom-left-radius: 5.9px;
+  border: 1px solid @edit-border;
+}
+
+.add {
+  border-top-right-radius: 5.9px;
+  border-bottom-right-radius: 5.9px;
+  border: 1px solid @edit-border;
+}
+</style>

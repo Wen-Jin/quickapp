@@ -1,0 +1,168 @@
+<import name="my-input-number" src="apex-ui/components/input-number/index"></import>
+
+<template>
+  <!-- template里只能有一个根节点 -->
+  <div class="container">
+    <div class="banner-img">
+      <swiper class="swiper-content" autoplay="true">
+        <image src="{{data.goods_pic}}" class="img-setting"></image>
+        <image src="{{data.goods_pic}}" class="img-setting"></image>
+      </swiper>
+    </div>
+    <div class="main-title main-content">
+      <div class="goods-title">
+        <div class="left-goods-title">
+          <text class="topMain-title">{{ data.goods_name }}</text>
+          <text class="center-goods-title">{{ data.goods_detail }}</text>
+          <text class="bottom-goods-title">{{ data.goods_numbers }}</text>
+        </div>
+      </div>
+
+      <div class="goods-price-qty">
+        <div class="priceLeft">
+          <text class="goods-price"> {{ data.goods_discount }} </text>
+          <text class="org-goods-price"> {{ data.goods_price }} </text>
+        </div>
+        <div class="goodsQty">
+          <my-input-number
+            value="{{data.count}}"
+            min="{{0}}"
+            max="{{100}}"
+            positive="{{true}}"
+            onchange="handlerChangeDetail"
+          ></my-input-number>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+module.exports = {
+  protected: {
+    data: ''
+  },
+  onInit() {
+    this.$page.setTitleBar({
+      text: '商品详情',
+      textColor: '#1A1A1A',
+      backgroundColor: '#F2F2F2',
+      menu: false
+    })
+  },
+  handlerChangeDetail({ detail }) {
+    this.data.count = detail.value
+    if (this.data.count === 0) {
+      this.data.choosed = false
+    } else {
+      this.data.choosed = true
+    }
+    this.$dispatch('countChange')
+  }
+}
+</script>
+
+<style lang="less">
+@import '../assets/styles/style.less';
+
+.banner-img {
+  margin-bottom: 15px;
+}
+
+.line-sep {
+  border-bottom-width: 0.5px;
+  border-color: rgba(0, 0, 0, 0.2);
+  margin-bottom: 17px;
+}
+
+.edit {
+  font-size: 22px;
+  color: #1a1a1a;
+  width: 48px;
+  height: 50px;
+  .flex-box-mixins(row, center, center);
+}
+
+.qtyCount {
+  width: 50px;
+  height: 50px;
+  border: 0.5px solid #dddddd;
+  .flex-box-mixins(row, center, center);
+}
+
+.main-title {
+  flex-direction: column;
+}
+
+.goods-price-qty {
+  justify-content: space-between;
+  width: 100%;
+}
+
+.org-goods-price {
+  color: @font-color;
+  opacity: 0.3;
+  font-size: 25px;
+  text-decoration: line-through;
+  height: 46.9px;
+  margin-top: 9px;
+}
+
+.goods-price {
+  font-size: 46.9px;
+  color: #ff742e;
+  margin-right: 17px;
+}
+
+.bottom-goods-title {
+  font-size: 20px;
+  opacity: 0.3;
+  color: @font-color;
+}
+
+.center-goods-title {
+  font-size: 27.1px;
+  opacity: 0.5;
+  margin-bottom: 13px;
+  color: @font-color;
+}
+
+.topMain-title {
+  font-size: 31.3px;
+  margin-bottom: 12px;
+  color: @font-color;
+}
+
+.goods-title {
+  flex-direction: row;
+}
+
+.left-goods-title {
+  flex-direction: column;
+  width: 470px;
+  color: @font-color;
+}
+
+.img-setting {
+  background-position: bottom;
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: 100%;
+  height: 750px;
+}
+
+.swiper-content {
+  width: 750px;
+  height: 750px;
+}
+
+.main-content {
+  padding-left: 33px;
+  padding-right: 33px;
+}
+
+.container {
+  flex-direction: column;
+  width: 750px;
+}
+</style>

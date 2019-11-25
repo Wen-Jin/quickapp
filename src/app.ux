@@ -1,0 +1,19 @@
+<script>
+/**
+ * @desc: 引入{轻粒子快应用统计}代码
+ */
+import './assets/js/appstatistics.min.js'
+import { $utils } from './helper'
+
+/* @desc: 注入方法至全局 global, 以便页面调用 */
+const hook2global = global.__proto__ || global
+hook2global.$utils = $utils
+
+export default {
+  showMenu: $utils.showMenu,
+  createShortcut: $utils.createShortcut,
+  onCreate() {
+    APP_STATISTICS.app_sta_init(this)
+  }
+}
+</script>

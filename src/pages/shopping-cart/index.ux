@@ -1,0 +1,202 @@
+<import name="sumBar" src="../../components/checkout"></import>
+<import name="my-input-number" src="apex-ui/components/input-number/index"></import>
+
+<template>
+  <div class="shopping-list">
+    <div class="goods-item" for="data" if="{{$item.count}}">
+      <image class="pic" style="width:134px;height:134px;" src="{{$item.goods_pic}}"></image>
+      <div class="goods-detail">
+        <text class="goods-name">{{ $item.goods_name }}</text>
+        <text class="goods-weight">{{ $item.goods_numbers }}</text>
+        <div class="bottom">
+          <div class="goods-price">
+            <text class="goods-discount">¥{{ $item.goods_discount }}</text>
+          </div>
+          <div class="count-number">
+            <my-input-number
+              value="{{$item.count}}"
+              min="{{0}}"
+              max="{{100}}"
+              positive="{{true}}"
+              onchange="handlerChangeCart($item)"
+            ></my-input-number>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="confirm">
+      <text>总价为： ¥{{ sum }}元</text>
+      <input type="button" class="confirm-button" value="确认付款" />
+    </div>
+  </div>
+</template>
+
+<script>
+module.exports = {
+  protected: {
+    sum: '',
+    verticaltablist: '',
+    address: '开发区九峰三路207号A1栋', // 购物车当前定位地址
+    data: []
+  },
+  handlerChangeCart(params, event) {
+    params.count = event.detail.value
+    if (params.count === 0) {
+      params.choosed = false
+    } else {
+      params.choosed = true
+    }
+    this.sum = this.getSum()
+  },
+  onInit() {
+    this.$page.setTitleBar({ text: '购物车' })
+    const itemList = JSON.parse(this.verticaltablist)
+    const product = itemList.reduce((acc, cur) => {
+      return [...acc, ...cur.products]
+    }, '')
+    let data_shoppingcart = []
+    product.forEach(element => {
+      if (element.choosed) {
+        data_shoppingcart = [...data_shoppingcart, element]
+      }
+    })
+    this.data = data_shoppingcart
+  },
+  getSum() {
+    let sumNumber = 0
+    this.data.forEach(item => {
+      sumNumber += item.count * item.goods_discount
+    })
+    return sumNumber.toFixed(2)
+  },
+  onHide() {
+    this.$app.$data.dataPageShoppingCart = {
+      gotoPage: 'pagemain',
+      params: {
+        data: this.data
+      }
+    }
+  }
+}
+</script>
+
+<style lang="less">
+@import '../../assets/styles/style.less';
+
+.shopping-list {
+  margin-top: 30px;
+  display: flex;
+  .flex-box-mixins(column, flex-start, stretch);
+
+  .goods-item {
+    margin: 30px 0;
+    display: flex;
+    flex-direction: row;
+    border-bottom-width: 1px;
+    border-color: @grey;
+  }
+
+  .bottom {
+    justify-content: space-between;
+    width: 100%;
+    padding-right: 33px;
+  }
+
+  .goods-container {
+    flex-direction: column;
+    width: 578px;
+  }
+
+  .page-content {
+    align-items: center;
+    height: 200px;
+    width: 578px;
+    border-bottom-width: 1px;
+    border-color: @grey;
+  }
+
+  .pic {
+    width: 134px;
+    height: 134px;
+    border-radius: 8.3px;
+    margin: 0px 33px 0px 33px;
+  }
+
+  .goods-detail {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .goods-name {
+    font-size: 31.3px;
+    color: @font-color;
+  }
+
+  .goods-weight {
+    color: @font-color;
+    opacity: 0.3;
+    font-size: 20.8px;
+    margin-top: 8px;
+  }
+
+  .goods-discount {
+    color: #ff742e;
+    font-size: 31.3px;
+    margin-right: 16px;
+    margin-top: 19px;
+  }
+
+  .edit {
+    font-size: 22px;
+    color: @font-color;
+    justify-content: center;
+    align-items: center;
+    width: 48px;
+    height: 50px;
+  }
+
+  .count {
+    border-top-color: @edit-border;
+    border-top-width: 1px;
+    border-bottom-color: @edit-border;
+    border-bottom-width: 1px;
+  }
+
+  .edit-text {
+    color: @font-color;
+    opacity: 1;
+    font-size: 22px;
+  }
+
+  .minus {
+    border-top-left-radius: 5.9px;
+    border-bottom-left-radius: 5.9px;
+    border: 1px solid @edit-border;
+  }
+
+  .add {
+    border-top-right-radius: 5.9px;
+    border-bottom-right-radius: 5.9px;
+    border: 1px solid @edit-border;
+  }
+
+  .confirm {
+    height: 100px;
+    flex-direction: row;
+    position: fixed;
+    bottom: 0px;
+    width: 100%;
+    display: flex;
+    input {
+      flex-grow: 1;
+      color: @white;
+      background-color: #ff9a00;
+    }
+    text {
+      background-color: #f1f1f1;
+      padding-left: 30px;
+      flex-grow: 0.3;
+    }
+  }
+}
+</style>

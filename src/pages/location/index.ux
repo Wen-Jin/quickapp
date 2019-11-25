@@ -1,0 +1,62 @@
+<import name="header" src="../../components/header"></import>
+<import name="location-list" src="../../components/location-list"></import>
+
+<template>
+  <div class="location-container">
+    <header placeholder="小区，地区名"></header>
+    <location-list listdata="{{listdataCurrent}}" title="当前地址"></location-list>
+    <location-list listdata="{{listdataSave}}" title="收货地址"></location-list>
+    <location-list listdata="{{listdataNearby}}" title="附近地址"></location-list>
+  </div>
+</template>
+
+<script>
+import geolocation from '@system.geolocation'
+
+export default {
+  data: {
+    listdataNearby: [
+      {
+        location: '亚捷大厦'
+      },
+      {
+        location: '怡景大厦'
+      },
+      {
+        location: '步步高大厦(安得街)'
+      }
+    ],
+    listdataSave: [
+      {
+        location: '上梅林步步高大厦304'
+      }
+    ],
+    listdataCurrent: [
+      {
+        location: '步步高大厦(安得街)'
+      }
+    ]
+  },
+  //进入地址页面时先定位
+  onInit() {
+    geolocation.getLocation({
+      success: function(data) {
+        console.log(`handling success: longitude = ${data.longitude}, latitude = ${data.latitude}`)
+      },
+      fail: function(data, code) {
+        console.log(`handling fail, code = ${code}`)
+      }
+    })
+    this.$page.setTitleBar({ text: '位置' })
+  }
+}
+</script>
+
+<style lang="less">
+@import '../../assets/styles/style.less';
+
+.location-container {
+  background-color: @white;
+  .flex-box-mixins(column, flex-start, stretch);
+}
+</style>

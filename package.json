@@ -1,0 +1,42 @@
+{
+  "name": "food",
+  "version": "1.2.0",
+  "subversion": {
+    "toolkit": "1.5.4"
+  },
+  "description": "外卖快应用模版",
+  "scripts": {
+    "start": "concurrently \"node ./command/server.js\" \"npm run watch\"",
+    "build": "hap build",
+    "release": "hap release",
+    "server": "hap server",
+    "watch": "hap watch",
+    "postinstall": "hap postinstall",
+    "debug": "hap debug",
+    "commit": "git add . && git commit -m '✨ functional update' && git push",
+    "clean-commit": "git checkout --orphan latest_branch && git add -A && git commit -am '🎉 Initial commit' && git branch -D master && git branch -m master && git push -f origin master",
+    "precommit-msg": "echo '🚧 start pre-commit checks...' && exit 0",
+    "prettier": "prettier --write 'src/**/*.js' 'src/**/*.ux'",
+    "prettier-watch": "onchange '**/*.md' 'src/**/*.js' 'src/**/*.ux' -- prettier --write {{changed}}"
+  },
+  "devDependencies": {
+    "@types/quickapp": "git+https://github.com/vivoquickapp/quickapp-types.git",
+    "apex-ui": "latest",
+    "babel-eslint": "^10.0.2",
+    "concurrently": "^4.0.1",
+    "eslint": "^5.16.0",
+    "eslint-plugin-hybrid": "0.0.5",
+    "hap-toolkit": "latest",
+    "less": "^3.8.1",
+    "less-loader": "^4.1.0",
+    "onchange": "^5.2.0",
+    "prettier": "^1.14.3",
+    "prettier-plugin-ux": "^0.0.1"
+  },
+  "prettier": {
+    "singleQuote": true,
+    "semi": false,
+    "printWidth": 120,
+    "proseWrap": "never"
+  }
+}
